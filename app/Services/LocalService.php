@@ -107,7 +107,11 @@ class LocalService
     public function getAll(): Collection
     {
         try {
-            return Local::with(['cameras', 'eventos'])->get();
+            return Local::with(['eventos' => function($query) {
+                $query->whereDate('data_inicio', '<=', date('Y-m-d')) // data_inicio menor ou igual à data atual
+                  ->whereDate('data_fim', '>=', date('Y-m-d')) // data_fim maior ou igual à data atual
+                  ->where('tipo_evento', 'online'); // data_fim maior ou igual à data atual
+            }])->get();
         } catch (QueryException $e) {
             throw new \Exception("Erro ao buscar locais: " . $e->getMessage());
         }

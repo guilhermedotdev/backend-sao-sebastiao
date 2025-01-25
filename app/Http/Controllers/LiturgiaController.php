@@ -13,8 +13,8 @@ class LiturgiaController extends Controller
         $this->liturgiaService = $liturgiaService;
     }
 
-    function index()
+    function index(Request $request)
     {
-        return $this->liturgiaService->getLiturgiaDiaria();    
+        return $this->liturgiaService->getLiturgiaDiaria($request->date);    
     }
 }
