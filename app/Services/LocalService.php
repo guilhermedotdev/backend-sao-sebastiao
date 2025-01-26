@@ -70,6 +70,8 @@ class LocalService
             ->whereHas('eventos') // Filtra apenas locais que possuem eventos
             ->with(['eventos' => function ($query) {
                 $query->where('tipo_evento', 'presencial') // Filtra os eventos no carregamento
+                    ->whereDate('data_inicio', '<=', date('Y-m-d')) // data_inicio menor ou igual à data atual
+                    ->whereDate('data_fim', '>=', date('Y-m-d')) // data_fim maior ou igual à data atual
                     ->orderBy('data_inicio', 'asc');
             }]) // Carrega os eventos ordenados
             ->get();
