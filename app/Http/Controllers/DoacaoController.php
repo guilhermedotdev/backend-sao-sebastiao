@@ -20,7 +20,7 @@ class DoacaoController extends Controller
      */
     public function store(StoreDoacaoRequest $request)
     {
-        $codigo = $this->doacaoService->doDoacao($request->nome, $request->cpf, $request->email, $request->valor, 'XXX');
+        $codigo = $this->doacaoService->doDoacao($request->nome, $request->cpf, $request->email, $request->valor, 'paroquiasaosebastiao1880@hotmail.com');
         return [
             'codigo' => $codigo
         ];
