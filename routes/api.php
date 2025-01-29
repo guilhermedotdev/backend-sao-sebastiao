@@ -10,6 +10,9 @@ use App\Http\Controllers\LocalController;
 use App\Http\Controllers\CameraController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DoacaoController;
+use App\Http\Controllers\TestimonyController;
+use App\Http\Controllers\CommentController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -61,4 +64,11 @@ Route::middleware('auth:api')->group(function () {
     Route::put('/cameras/{id}', [CameraController::class, 'update']); // Atualizar uma câmera existente
     Route::delete('/cameras/{id}', [CameraController::class, 'destroy']); // Excluir uma câmera pelo ID
 
+
+    // Rota para o único tópico de testemunhos
+    Route::get('testimony', [TestimonyController::class, 'index']);
+    Route::post('testimony', [TestimonyController::class, 'store']);  // Para atualizar o testemunho
+
+    // Rota para adicionar comentários aos testemunhos
+    Route::post('testimony/{testimonyId}/comments', [CommentController::class, 'store']);
 });
