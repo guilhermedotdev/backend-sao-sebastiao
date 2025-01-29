@@ -24,7 +24,8 @@ class TestimonyController extends Controller
         // Verifica se o tópico já existe (único tópico)
         $testimony = Testimony::create([
             "content" => $request->content,
-            "user_id" => auth()->id(),
+            // "user_id" => auth()->id(),
+            "user_id" => 11,
         ]);
         
         return response()->json($testimony, 201);

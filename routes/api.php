@@ -39,6 +39,12 @@ Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:api');
 
+
+// Rota para o único tópico de testemunhos
+Route::get('testimony', [TestimonyController::class, 'index']);
+Route::post('testimony', [TestimonyController::class, 'store']);  // Para atualizar o testemunho
+
+
 // Auth
 Route::middleware('auth:api')->group(function () {
     Route::post('artigos/', [ArtigoController::class, 'store']); // Criar artigo
@@ -64,10 +70,6 @@ Route::middleware('auth:api')->group(function () {
     Route::put('/cameras/{id}', [CameraController::class, 'update']); // Atualizar uma câmera existente
     Route::delete('/cameras/{id}', [CameraController::class, 'destroy']); // Excluir uma câmera pelo ID
 
-
-    // Rota para o único tópico de testemunhos
-    Route::get('testimony', [TestimonyController::class, 'index']);
-    Route::post('testimony', [TestimonyController::class, 'store']);  // Para atualizar o testemunho
 
     // Rota para adicionar comentários aos testemunhos
     Route::post('testimony/{testimonyId}/comments', [CommentController::class, 'store']);
