@@ -100,7 +100,7 @@ class EventoService
                 'nome' => $data['nome'],
                 'tipo_evento' => $data['tipo_evento'],
                 'descricao' => $data['descricao'],
-                'url_imagem' => $data['url_imagem'],
+                'url_imagem' => $data['url_imagem'] ?? null,
                 'data_inicio' => $data['data_inicio'],
                 'data_fim' => $data['data_fim'],
             ]);

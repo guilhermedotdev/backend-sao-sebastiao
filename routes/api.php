@@ -42,6 +42,8 @@ Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:api')
 
 // Auth
 Route::middleware('auth:api')->group(function () {
+    Route::get('me/', [AuthController::class, 'me']); // Criar artigo
+    
     Route::post('artigos/', [ArtigoController::class, 'store']); // Criar artigo
     Route::put('artigos/{id}', [ArtigoController::class, 'update']); // Atualizar artigo
     Route::delete('artigos/{id}', [ArtigoController::class, 'destroy']); // Deletar artigo

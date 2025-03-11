@@ -20,14 +20,25 @@ class TestimonyController extends Controller
         $request->validate([
             'content' => 'required|string',
         ]);
-
-        // Verifica se o tópico já existe (único tópico)
+    
+        $content = strtolower($request->content); // Normaliza para evitar problemas de case
+    
+        // Verifica se o conteúdo contém alguma palavra proibida sem carregar tudo na memória
+        foreach (\App\Models\BadWords::cursor() as $badWord) {
+            if (str_contains($content, strtolower($badWord->bad_word))) {
+                return response()->json([
+                    'error' => 'Seu testemunho contém palavras inadequadas.',
+                ], 400);
+            }
+        }
+    
+        // Cria o testemunho se não houver palavras proibidas
         $testimony = Testimony::create([
             "content" => $request->content,
             "user_id" => auth()->id(),
-            // "user_id" => 11,
         ]);
-        
+    
         return response()->json($testimony, 201);
     }
+    
 }

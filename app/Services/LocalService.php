@@ -67,22 +67,27 @@ class LocalService
         )
             ->having('distancia', '<=', $raio)
             ->orderBy('distancia', 'asc')
-            ->whereHas('eventos') // Filtra apenas locais que possuem eventos
+            ->whereHas('eventos', function ($query) {
+                $query->where('tipo_evento', 'presencial')
+                    ->whereDate('data_inicio', '<=', date('Y-m-d'))
+                    ->whereDate('data_fim', '>=', date('Y-m-d'));
+            }) // Garante que só traz locais com eventos presenciais ativos
             ->with(['eventos' => function ($query) {
-                $query->where('tipo_evento', 'presencial') // Filtra os eventos no carregamento
-                    ->whereDate('data_inicio', '<=', date('Y-m-d')) // data_inicio menor ou igual à data atual
-                    ->whereDate('data_fim', '>=', date('Y-m-d')) // data_fim maior ou igual à data atual
+                $query->where('tipo_evento', 'presencial')
+                    ->whereDate('data_inicio', '<=', date('Y-m-d'))
+                    ->whereDate('data_fim', '>=', date('Y-m-d'))
                     ->orderBy('data_inicio', 'asc');
-            }]) // Carrega os eventos ordenados
+            }])
             ->get();
 
-        // Preparar o resultado com eventos agrupados por local
-        return $locais->map(function ($local) {
-            return [
+        // Garante que locais sem eventos sejam removidos
+        return $locais->filter(fn($local) => $local->eventos->isNotEmpty())
+            ->map(fn($local) => [
                 'local' => $local,
                 'eventos' => $local->eventos,
-            ];
-        })->toArray();
+            ])
+            ->values()
+            ->toArray();
     }
 
         /**
